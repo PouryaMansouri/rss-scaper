@@ -1,0 +1,4 @@
+[flake8]
+min_python_version = 3.6.2
+exclude=*/migrations/*,__init__.py,*/settings/*,src/notification/sample.py
+max-line-length=120
