@@ -16,7 +16,7 @@ services:
     build: ./
     command: gunicorn _core.wsgi:application --bind 0.0.0.0:8000 -w3
     volumes:
-      - ./:/usr/src/app/
+      - ./:/code/
     ports:
       - 8000:8000
     env_file:
@@ -53,7 +53,7 @@ services:
   celery-worker:
     build: .
     container_name: celery-worker
-    command: "celery -A config worker -l debug"
+    command: "celery -A _core worker -l debug"
     depends_on:
       - web
       - rabbitmq
@@ -67,13 +67,32 @@ services:
   celery-beat:
     build: .
     container_name: celery-beat
-    command: "celery -A config beat  -l debug --scheduler  django_celery_beat.schedulers:DatabaseScheduler"
+    command: "celery -A _core beat  -l debug --scheduler  django_celery_beat.schedulers:DatabaseScheduler"
     depends_on:
       - celery-worker
     networks:
       - main
     restart: always
 
+
+  nginx:
+     build: './nginx'
+     container_name: 'nginx'
+     restart: always
+     ports:
+       - "80:80"
+     depends_on:
+       - web
+     volumes:
+       - type: 'bind'
+         source: './static'
+         target: '/web/static'
+       - type: 'bind'
+         source: './media'
+         target: '/web/media'
+
+     networks:
+       - main
 
 
 networks:
