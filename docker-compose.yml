@@ -1,6 +1,17 @@
 version: '3.8'
 
 services:
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3.11
+    networks:
+      - main
+    ports:
+      - "5672:5672"
+    restart: always
+
+
   web:
     build: ./
     command: gunicorn _core.wsgi:application --bind 0.0.0.0:8000 -w3
@@ -12,14 +23,61 @@ services:
       - ./.env
     depends_on:
       - db
+    networks:
+      - main
+
   db:
-    image: postgres:13.0-alpine
+    container_name: db
+    image: postgres:15
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
-      - POSTGRES_USER=rssuser
-      - POSTGRES_PASSWORD=testpass
-      - POSTGRES_DB=rssdb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mypassword
+      - POSTGRES_DB=rss_feeds_db
+    networks:
+      - main
+    ports:
+      - "5432:5432"
+
+  redis:
+    container_name: redis
+    restart: always
+    image: redis:7
+    ports:
+      - "6379:6379"
+    networks:
+        - main
+
+
+  celery-worker:
+    build: .
+    container_name: celery-worker
+    command: "celery -A config worker -l debug"
+    depends_on:
+      - web
+      - rabbitmq
+      - db
+    environment:
+      - C_FORCE_ROOT="true"
+    networks:
+      - main
+    restart: always
+
+  celery-beat:
+    build: .
+    container_name: celery-beat
+    command: "celery -A config beat  -l debug --scheduler  django_celery_beat.schedulers:DatabaseScheduler"
+    depends_on:
+      - celery-worker
+    networks:
+      - main
+    restart: always
+
+
+
+networks:
+  main:
 
 volumes:
   postgres_data:
