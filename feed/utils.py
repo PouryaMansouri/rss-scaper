@@ -1,7 +1,7 @@
+from datetime import datetime
 from typing import List
 
 import feedparser
-from django.utils import timezone
 
 from feed.exceptions import FetchFeedException
 from feed.models import Feed, FeedItem
@@ -38,7 +38,7 @@ def update_feed_attributes(feed):
     # Update attributes of the feed object
     feed.name = parsed_feed.feed.title
     feed.description = parsed_feed.feed.subtitle
-    feed.last_update = timezone.now()
+    feed.last_update = datetime.now()
     feed.save()
 
 
@@ -53,20 +53,16 @@ def update_feed_items(feed):
     parsed_feed = fetch_feed(feed.url)
 
     # Create or update feed items in the database
-    for entry in parsed_feed.entries:
-        feed_item, created = FeedItem.objects.get_or_create(
-            feed=feed,
-            guid=entry.guid,
-            defaults={
-                'title': entry.title,
-                'body': entry.description,
-                'created': timezone.make_aware(entry.published_parsed)
-            }
-        )
-
-        # If the feed item already exists, update it
-        if not created:
-            feed_item.title = entry.title
-            feed_item.body = entry.description
-            feed_item.created = timezone.make_aware(entry.published_parsed)
-            feed_item.save()
+    # for entry in parsed_feed.entries:
+    #     feed_item, created = FeedItem.objects.get_or_create(
+    #         feed=feed,
+    #         guid=entry.guid,
+    #     )
+    #
+    #     # If the feed item already exists, update it
+    #     if not created:
+    #         feed_item.title = entry.title
+    #         feed_item.body = entry.description
+    #         feed_item.save()
+    print('*'*100)
+    print('update_feed_items')
