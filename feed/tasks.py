@@ -1,31 +1,41 @@
 from abc import ABC
+import feedparser
 
-import asyncio
+from django.utils import timezone
 import celery
 from celery import shared_task
 
-from feed.utils import get_feeds_from_db, fetch_feeds_items_from_feed_url
+from feed.models import Feed, FeedItem
+from feed.utils import get_live_feeds_ids_from_db, update_feed_attributes, update_feed_items
 
 MAX_RETRIES = 5
 
 
-class FeedTask(celery.Task, ABC):
+class BaseTaskWithFailure(celery.Task, ABC):
 
     def on_failure(self, exc, task_id, args, kwargs, einfo):
         print('{0!r} failed: {1!r}'.format(task_id, exc))
         raise self.retry(exc=exc, countdown=2 ** self.request.retries)
 
 
-@shared_task(base=FeedTask, max_retries=MAX_RETRIES)
-def fetch_one_feed(url):
-    asyncio.run(fetch_feeds_items_from_feed_url(url))
+@shared_task(base=BaseTaskWithFailure, bind=True, max_retries=MAX_RETRIES)
+def update_feed(feed_id):
+    """
+    Task to update the feed attributes and fetch and update feed items.
+
+    Args:
+        feed_id (int): The ID of the Feed object to be updated.
+
+    """
+    feed = Feed.objects.get(id=feed_id)
+    update_feed_attributes(feed)
+    update_feed_items(feed)
 
 
-@shared_task()
-def fetch_feeds():
+@shared_task(base=BaseTaskWithFailure, bind=True, max_retries=MAX_RETRIES)
+def update_feeds():
     """
-    get all feeds from db
-    create FeedTask for each feed in celery
+    Task to update all the feeds that are live.
     """
-    all_live_feeds = get_feeds_from_db()
-    list(map(lambda feed: fetch_one_feed.delay(feed.url), all_live_feeds))
+    lives_feeds_ids = get_live_feeds_ids_from_db()
+    list(map(update_feed.delay, lives_feeds_ids))
