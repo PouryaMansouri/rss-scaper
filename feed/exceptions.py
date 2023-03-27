@@ -1,0 +1,2 @@
+class FetchFeedException(Exception):
+    pass
