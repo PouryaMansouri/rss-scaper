@@ -2,11 +2,15 @@
 
 
  This is a Django-based web application that aggregates RSS feeds. It includes a set of RESTful APIs to allow the front-end to interact with the back-end services.
-Getting Started
+### Getting Started
 To run the project, simply clone it from GitHub and use docker-compose to start the service. Follow the steps below:
- 1 Clone the repository
- 2 In the project directory, run docker-compose up -d --build
- 3 Navigate to http://localhost in your web browser
+
+ 1. Clone the repository
+ 2. In the project directory, run: 
+```shell
+docker-compose up -d --build
+```
+ 3. Navigate to http://localhost in your web browser
 
 ## Endpoints
 
