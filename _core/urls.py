@@ -19,6 +19,7 @@ from django.urls import include, path
 admin.site.site_header = 'Crypto Exchange Administration'
 
 api_v1_urlpatterns = [
+    path('feed/', include('feed.urls')),
 ]
 
 
