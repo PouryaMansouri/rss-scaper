@@ -5,6 +5,7 @@ django-cors-headers==3.12.0
 django-model-utils==4.2.0
 django-redis==5.2.0
 djangorestframework-simplejwt==5.0.0
+feedparser==6.0.10
 flake8==5.0.4
 gunicorn==20.1.0
 pip-chill==1.0.1
@@ -22,18 +23,18 @@ xmltodict==0.13.0
 # celery==5.2.3 # Installed as dependency for django-celery-beat
 # cfgv==3.3.1 # Installed as dependency for pre-commit
 # charset-normalizer==3.1.0 # Installed as dependency for aiohttp
-# click==8.1.3 # Installed as dependency for celery, click-plugins, click-didyoumean, click-repl
+# click==8.1.3 # Installed as dependency for click-plugins, click-didyoumean, celery, click-repl
 # click-didyoumean==0.3.0 # Installed as dependency for celery
 # click-plugins==1.1.1 # Installed as dependency for celery
 # click-repl==0.2.0 # Installed as dependency for celery
 # colorama==0.4.6 # Installed as dependency for click
 # deprecated==1.2.13 # Installed as dependency for redis
 # distlib==0.3.6 # Installed as dependency for virtualenv
-# django==3.2.18 # Installed as dependency for django-cors-headers, djangorestframework-simplejwt, django-timezone-field, django-redis, djangorestframework, django-celery-beat, django-model-utils
+# django==3.2.18 # Installed as dependency for djangorestframework-simplejwt, djangorestframework, django-model-utils, django-celery-beat, django-timezone-field, django-cors-headers, django-redis
 # django-timezone-field==4.2.3 # Installed as dependency for django-celery-beat
 # djangorestframework==3.13.1 # Installed as dependency for djangorestframework-simplejwt
 # filelock==3.10.6 # Installed as dependency for virtualenv
-# frozenlist==1.3.3 # Installed as dependency for aiosignal, aiohttp
+# frozenlist==1.3.3 # Installed as dependency for aiohttp, aiosignal
 # identify==2.5.22 # Installed as dependency for pre-commit
 # idna==3.4 # Installed as dependency for yarl
 # kombu==5.2.4 # Installed as dependency for celery
@@ -48,13 +49,14 @@ xmltodict==0.13.0
 # pyjwt==2.6.0 # Installed as dependency for djangorestframework-simplejwt
 # python-crontab==2.7.1 # Installed as dependency for django-celery-beat
 # python-dateutil==2.8.2 # Installed as dependency for python-crontab
-# pytz==2023.2 # Installed as dependency for django, celery, djangorestframework, django-timezone-field
+# pytz==2023.2 # Installed as dependency for djangorestframework, django-timezone-field, celery, django
 # pyyaml==6.0 # Installed as dependency for pre-commit
 # redis==4.1.4 # Installed as dependency for django-redis
-# six==1.16.0 # Installed as dependency for click-repl, python-dateutil
+# sgmllib3k==1.0.0 # Installed as dependency for feedparser
+# six==1.16.0 # Installed as dependency for python-dateutil, click-repl
 # sqlparse==0.4.3 # Installed as dependency for django
 # toml==0.10.2 # Installed as dependency for pre-commit
-# vine==5.0.0 # Installed as dependency for celery, kombu, amqp
+# vine==5.0.0 # Installed as dependency for kombu, celery, amqp
 # virtualenv==20.21.0 # Installed as dependency for pre-commit
 # wcwidth==0.2.6 # Installed as dependency for prompt-toolkit
 # wrapt==1.15.0 # Installed as dependency for deprecated
