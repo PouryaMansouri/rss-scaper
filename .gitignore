@@ -6,8 +6,6 @@ __pycache__
 .pytest_cache/
 *.py[cod]
 .Python
-env/
-.env
 build/
 develop-eggs/
 dist/
@@ -23,7 +21,6 @@ var/
 *.egg-info/
 .installed.cfg
 *$py.class
-.env
 # Unit test / coverage reports
 htmlcov/
 .tox/
@@ -49,7 +46,6 @@ coverage.xml
 
 # Distribution / packaging
 .Python
-env/
 build/
 develop-eggs/
 dist/
@@ -73,14 +69,8 @@ var/
 
 db.sqlite3
 
-**/env/**
-.env/
 *.pdf
 .vscode/
-ENV/
-**/ENV/**
-venv/
-**/venv/**
 
 ### project ###
 local.py
